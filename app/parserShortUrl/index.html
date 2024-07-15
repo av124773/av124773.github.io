@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>短網址解析器</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>短網址解析器</h1>
+        <input type="text" id="shortUrl" placeholder="輸入短網址">
+        <button onclick="parseUrl()">解析</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function parseUrl() {
+            const shortUrl = document.getElementById('shortUrl').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!shortUrl) {
+                resultDiv.innerHTML = '請輸入一個短網址';
+                return;
+            }
+
+            try {
+                const response = await axios.get(`https://1rut36m065.execute-api.us-east-1.amazonaws.com/parserShortURL_practise?url=${encodeURIComponent(shortUrl)}`);
+                resultDiv.innerHTML = `解析結果: ${response.data}`;
+            } catch (error) {
+                resultDiv.innerHTML = '解析失敗，請確認網址是否正確';
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
